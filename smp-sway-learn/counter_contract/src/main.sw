@@ -1,38 +1,40 @@
+/* ANCHOR: all */
+// ANCHOR: contract
 contract;
+// ANCHOR_END: contract
 
+// ANCHOR: storage
 storage {
-    count: u64 = 0
+    counter: u64 = 0,
 }
+// ANCHOR_END: storage
 
+// ANCHOR: abi
 abi Counter {
+    #[storage(read, write)]
+    fn increment();
+
     #[storage(read)]
-    fn get() -> u64;
-
-    #[storage(read, write)]
-    fn inc() -> u64;
-
-    #[storage(read, write)]
-    fn dec() -> u64;
+    fn count() -> u64;
 }
+// ANCHOR_END: abi
 
+// ANCHOR: counter-contract
 impl Counter for Contract {
     #[storage(read)]
-    fn get() -> u64 {
-        let fuckitfix = storage.count.read();
-        fuckitfix
+    // ANCHOR: count
+    fn count() -> u64 {
+        storage.counter.read()
     }
+    // ANCHOR_END: count
 
     #[storage(read, write)]
-    fn inc() -> u64 {
-        let incremented = storage.count.read() + 1;
-        storage.count.write(incremented);
-        incremented
+    // ANCHOR: increment
+    fn increment() {
+        let incremented = storage.counter.read() + 1;
+        storage.counter.write(incremented);
     }
-
-    #[storage(read, write)]
-    fn dec() -> u64 {
-        let decremented = storage.count.read();
-        storage.count.write(decremented - 1);
-        decremented
-    }
+    // ANCHOR_END: increment
 }
+// ANCHOR_END: counter-contract
+/* ANCHOR_END: all */
